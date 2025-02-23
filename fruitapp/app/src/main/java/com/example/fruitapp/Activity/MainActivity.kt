@@ -1,4 +1,4 @@
-package com.example.fruitapp
+package com.example.fruitapp.Activity
 
 import FruitsListScreen
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.fruitapp.ui.view.DetailScreen
 import com.example.fruitapp.ui.view.FruitScreen
-import com.example.fruitapp.ui.viewmodel.FruitViewModel
+import com.example.fruitapp.ui.view.viewmodel.FruitViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +27,13 @@ class MainActivity : ComponentActivity() {
                 }
                 composable("detail_screen/{fruitId}") { backStackEntry ->
                     val fruitId = backStackEntry.arguments?.getString("fruitId")?.toIntOrNull()
-                    viewModel.getFoodByID(fruitId) 
-                    viewModel.fruit.value?.let { DetailScreen(navController, it) }
+                    if (fruitId != null) {
+
+                        viewModel.getFruitByID(fruitId)
+                    }
+                    viewModel._fruit.value?.let { fruit ->
+                        DetailScreen(navController, fruit)
+                    }
                 }
             }
         }
